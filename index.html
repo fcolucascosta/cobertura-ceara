@@ -935,7 +935,7 @@ function createMobileUX({map,data,onMunicipality,onFocus,onPoint,name,color}){
  }
  function fitOptions(){return mobile()?{paddingTopLeft:[20,100],paddingBottomRight:[20,stops()[state]+30],animate:false}:{padding:[24,24],animate:false};}
  function summary(text){el('sheet-summary').textContent=text;}
- function point(lat,lng){selectedPoint=[lat,lng];ensurePointVisible();}
+ function point(lat,lng){selectedPoint=[lat,lng];el('place-search').value='';el('location-status').hidden=true;ensurePointVisible();}
  function refreshViewport(){
   if(resizeFrame)return;resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;
    const vv=window.visualViewport,h=vv?.height||innerHeight,offset=vv?.offsetTop||0;
@@ -978,7 +978,7 @@ function createMobileUX({map,data,onMunicipality,onFocus,onPoint,name,color}){
  el('locate').addEventListener('click',()=>{
   closeSearch();search.blur();if(!navigator.geolocation){locationMessage('Este navegador não oferece localização. Busque um município.');return;}
   el('locate').disabled=true;locationMessage('Obtendo sua localização…');
-  navigator.geolocation.getCurrentPosition(position=>{el('locate').disabled=false;locationMessage('Localização aproximada · precisão de '+Math.round(position.coords.accuracy)+' m.');onPoint(position.coords.latitude,position.coords.longitude,true);},error=>{el('locate').disabled=false;locationMessage(error.code===1?'Localização não autorizada. Você pode buscar seu município.':'Não foi possível localizar você. Busque seu município.');},{timeout:12000,maximumAge:60000,enableHighAccuracy:false});
+  navigator.geolocation.getCurrentPosition(position=>{el('locate').disabled=false;onPoint(position.coords.latitude,position.coords.longitude,true);locationMessage('Localização aproximada · precisão de '+Math.round(position.coords.accuracy)+' m.');},error=>{el('locate').disabled=false;locationMessage(error.code===1?'Localização não autorizada. Você pode buscar seu município.':'Não foi possível localizar você. Busque seu município.');},{timeout:12000,maximumAge:60000,enableHighAccuracy:false});
  });
  function renderResults(result,selected){
   const container=el('mobile-results');container.hidden=false;container.replaceChildren();
