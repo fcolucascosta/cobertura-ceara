@@ -7,11 +7,20 @@ Site estático, sem backend. Dados, bibliotecas e aplicação estão incluídos 
 ## Uso no celular
 
 - Mapa em tela inteira, com painel inferior recolhido, intermediário ou expandido. Arraste a alça ou toque nela para mudar a posição.
-- Busca de município com sugestões locais e botão de localização, acionado apenas quando solicitado.
-- Toque no mapa para consultar cartões de Claro, Vivo, TIM e Brisanet. O ponto permanece visível acima do painel.
-- Combine 3G, 4G e 5G na aba Camadas; limiares e transparência ficam em Mais opções.
+- Busca de municípios e localidades com sugestões locais e botão de localização, acionado apenas quando solicitado. Bairros, vilas e povoados aparecem conforme o zoom.
+- Toque no mapa para consultar a matriz de operadoras × redes e os cartões de Claro, Vivo, TIM e Brisanet. O ponto permanece visível acima do painel.
+- Combine 3G, 4G e 5G na aba Camadas. Todo o mapa usa exclusivamente os limiares de sinal mais alto.
 - Legenda recolhível e atalho para visualizar todo o Ceará.
-- Tema claro ou noturno automático, seguindo o sistema, inclusive quando ele muda com a página aberta.
+- Tema inicialmente automático, com seletor claro/escuro que memoriza a escolha e opção para voltar ao tema do aparelho.
+- Fonte variável Roboto Flex, do Google Fonts, embutida no arquivo, com textos maiores nos controles e resultados.
+
+## Cores e desempenho
+
+A visão inicial usa uma escala azul para indicar quantas operadoras têm ao menos uma das redes selecionadas naquele local. A visão de uma operadora distingue 3G, 4G e 5G; a visão de coincidência mostra a interseção das camadas publicadas selecionadas. Listras indicam a coincidência dessas camadas. Brisanet 3G não foi publicado: ausência de informação aparece como N/D, sem ser tratada como ausência de cobertura.
+
+A matriz exibida ao tocar no mapa esclarece cada combinação de operadora e tecnologia. A transparência é fixa; a cor não representa intensidade de sinal. O [estudo de cores](ESTUDO_CORES.md) explica as decisões e referências.
+
+A cobertura é desenhada em blocos de 384 px, com processamento em worker e cache de máscaras. Arrastar reaproveita os blocos existentes, enquanto os novos são desenhados progressivamente.
 
 ## Rotas e recomendação
 
@@ -27,9 +36,10 @@ O ranking usa 60% de peso para 4G, 30% para 5G e 10% para 3G. Dados não publica
 - Limites e municípios: [IBGE](https://servicodados.ibge.gov.br/api/docs/malhas?versao=3).
 - Vias principais: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright), dados sob ODbL.
 - Leaflet: BSD 2-Clause; aviso de licença incluído no HTML.
+- Roboto Flex: SIL Open Font License; fonte e licença incluídas no HTML.
 - Interface inspirada em [Material 3 Expressive](https://m3.material.io/).
 
-As manchas são previsões, não medições no local. Não representam velocidade nem garantem cobertura dentro de imóveis. Os tons distinguem sobreposições de tecnologias da mesma operadora; a consulta mostra os limiares de sinal separadamente. Não há acréscimo automático de roaming.
+As manchas são previsões, não medições no local. Não representam velocidade nem garantem cobertura dentro de imóveis. A consulta usa os mesmos limiares de sinal mais alto do mapa e das rotas. Não há acréscimo automático de roaming.
 
 ## Atualizar
 
