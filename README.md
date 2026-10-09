@@ -30,6 +30,8 @@ A análise corta o traçado nos polígonos originais e mede seu comprimento, sem
 
 O ranking usa 60% de peso para 4G, 30% para 5G e 10% para 3G. Dados não publicados são excluídos e os pesos restantes normalizados, com informação parcial identificada. Esse índice expressa uma preferência de cobertura, não velocidade medida nem garantia de serviço. Percentuais são arredondados a 1%.
 
+Nos resultados, escolha **Dois chips** para comparar as seis duplas de operadoras. O cálculo une os trechos cobertos por qualquer uma delas, contando sobreposições uma única vez. Cada dupla mostra cobertura total, união de 4G/5G, percentuais por tecnologia, maior trecho sem cobertura combinada e ganho em pontos percentuais e quilômetros sobre a melhor cobertura total individual entre as duas operadoras. O ranking das duplas mantém os pesos 4G 60%, 5G 30% e 3G 10%. Informações ausentes, como Brisanet 3G, são identificadas; se a outra operadora tem dados dessa rede, entram apenas esses trechos conhecidos. O botão para ver a dupla destaca a união na rota e seleciona ambas no mapa. Dois chips oferecem alternativas de cobertura; os dados não pressupõem troca automática nem soma de velocidades.
+
 ## Fontes e critérios
 
 - Cobertura prevista em ambiente aberto: [Anatel / Mosaico](https://sistemas.anatel.gov.br/se/public/cmap.php), consultada em 08/10/2026. Publicações: 3G em 21/08/2026, 4G em 03/10/2026 e 5G em 07/09/2026. Brisanet 3G não foi publicado nesse catálogo.

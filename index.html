@@ -887,6 +887,17 @@ html[data-theme=dark] .route-field,html[data-theme=dark] .route-via input,html[d
 
 .route-recommendation{padding:13px;background:#dcece4;border-radius:16px;font-size:11px;line-height:1.5}.route-recommendation strong{display:block;font-size:13px;margin-bottom:4px}.route-index{font-size:10px;color:var(--accent);line-height:1.5;margin:8px 0}
 html[data-theme=dark] .route-recommendation{background:#244535}
+
+.route-comparison{display:flex;gap:4px;background:var(--accent-container);padding:5px;border-radius:100px;margin:16px 0}
+.route-comparison button{flex:1;min-height:44px;font-size:14px;font-weight:650;border-radius:100px;background:transparent;color:var(--ink)}
+.route-comparison button[aria-pressed=true]{background:var(--surface);box-shadow:0 2px 6px #20303515}
+.route-pair-card{background:#eaf0f5;border-radius:20px;padding:16px;margin:12px 0}
+.route-pair-card .route-card-header{align-items:flex-start}.route-pair-card .route-card-header h3{font-size:16px;line-height:1.4;overflow-wrap:anywhere}.route-pair-card .route-card-header>strong{flex:none}
+.route-pair-benefit{font-size:14px;line-height:1.5;padding:10px 12px;background:#dcece4;color:#245746;border-radius:12px;margin:8px 0 12px}
+.route-pair-partial{font-size:13px;line-height:1.5;color:var(--muted);margin:10px 0 0}
+.route-recommendation{font-size:14px}.route-recommendation strong{font-size:15px}
+html[data-theme=dark] .route-pair-card{background:#223744}html[data-theme=dark] .route-pair-benefit{background:#244535;color:#b5e4ca}html[data-theme=dark] .route-comparison button[aria-pressed=true]{background:#304d5a;color:#d1eef5}
+@media(max-width:760px),(max-height:500px) and (pointer:coarse){.route-pair-card{padding:14px}.route-pair-card .route-card-header h3{font-size:15px}.route-pair-benefit{font-size:13px}.route-comparison button{font-size:14px}}
 </style>
 <style>.tone-strip{display:inline-flex!important;gap:1px!important;border-radius:4px;overflow:hidden;margin-left:1px}.tone-strip i{width:7px;height:10px}.network-detail{display:block;font-size:11px;line-height:1.55}.place-label{background:#ffffffe8!important;border:0!important;box-shadow:none!important;font-weight:600;font-size:11px;color:#273e46;padding:2px 5px!important}.road-label{background:#fffbdfee!important;border:1px solid #9a9571!important;border-radius:3px;font-size:10px;padding:1px 4px!important;box-shadow:none!important}.leaflet-tooltip::before{display:none}</style>
 <style>body{font-family:'Roboto Flex',Roboto,system-ui,sans-serif;font-optical-sizing:auto;font-size:15px;line-height:1.5}button,input,select,textarea{font-family:inherit}button{line-height:1.3}.label,.hint{font-size:14px}.section h2{font-size:15px}.panel-nav button{font-size:14px}.operator label{font-size:15px}.solo{font-size:13px}.range-head,.tiny,.dates{font-size:13px!important}.notice,.route-method{font-size:13px;line-height:1.6}.brand p,.header-note{font-size:13px}.source-link,dialog p,dialog li{font-size:14px}.chip,.map-legend{font-size:14px}.legend-caption{font-size:13px;line-height:1.45}.legend-operators{gap:9px 13px}.legend-operators .swatch{width:14px;height:14px;border-radius:4px}.network-detail{font-size:13px;line-height:1.5}.count,table{font-size:14px}.route-card-caption,.route-index,.route-signal-legend,.route-network small{font-size:13px}.route-network,.route-network-name,.route-network-percentage{font-size:14px}.route-tools button,.route-actions button,.route-view,.route-alternatives button{font-size:13px}.route-summary{font-size:14px}.leaflet-tooltip.place-label{font-family:'Roboto Flex',sans-serif;font-size:14px;line-height:1.25;font-weight:650;padding:3px 6px!important;background:#fffffff0!important;color:#253b49}.leaflet-tooltip.locality-label{font-size:13px;font-weight:500;background:#ffffffe0!important}.leaflet-tooltip.road-label{font-family:'Roboto Flex',sans-serif;font-size:12px;background:#f6f8f4ed!important;color:#54626b;border-color:#aab4b9!important}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
@@ -1230,6 +1241,32 @@ function createRouteCoverageEngine(layers,operators,limits,statePolygons,predica
   for(let i=1;i<cuts.length;i++){const lo=cuts[i-1],hi=cuts[i],mid=(lo+hi)/2;if(hi-lo<1e-10||!has(allowed,mid))continue;const band=has(high,mid)?2:has(low,mid)?1:0;out.push({start:offset+lo*len,end:offset+hi*len,band,a:lerp(a,b,lo),b:lerp(a,b,hi)});}return out;
  }
  const table=new Map(layers.map(l=>[`${l.technology}:${l.operator}:${l.threshold}`,l]));
+ function longestGap(tracks){let longest=0,gap=0,lastEnd=-1;for(const t of tracks){if(t.band!==2){gap=t.start-lastEnd<.01?gap+t.end-t.start:t.end-t.start;longest=Math.max(longest,gap);}else gap=0;lastEnd=t.end;}return longest;}
+ function combineTracks(left,right){
+  // Merge two sorted streams of interval boundaries in linear time. Outside-state gaps stay excluded.
+  const streams=[left,right],positions=[0,0],tracks=[];let allowed=0,covered=0,last=null;
+  while(positions[0]<left.length*2||positions[1]<right.length*2){
+   const event=side=>{const i=positions[side],t=streams[side][i>>1];return t?{side,start:i%2===0,t,at:i%2===0?t.start:t.end,point:i%2===0?t.a:t.b}:null;};
+   const a=event(0),b=event(1),next=!a?b:!b?a:a.at<=b.at?a:b;
+   if(last&&allowed>0&&next.at-last.at>1e-8)tracks.push({start:last.at,end:next.at,band:covered>0?2:0,a:last.point,b:next.point});
+   const delta=next.start?1:-1;allowed+=delta;if(next.t.band===2)covered+=delta;positions[next.side]++;last=next;
+  }
+  return tracks;
+ }
+ const strongMetres=tracks=>tracks.reduce((sum,t)=>sum+(t.band===2?t.end-t.start:0),0);
+ function combinePairs(rows){
+  const pairs=[];
+  for(let i=0;i<rows.length;i++)for(let j=i+1;j<rows.length;j++){
+   const a=rows[i],b=rows[j],tracks=combineTracks(a.tracks,b.tracks),highMetres=strongMetres(tracks);
+   const networks=a.networks.map((n,k)=>{
+    const other=b.networks[k],known=[n,other].filter(x=>x.published&&x.complete),tracks=combineTracks(n.complete?n.tracks:[],other.complete?other.tracks:[]);
+    return {technology:n.technology,published:known.length>0,complete:known.length>0,highMetres:strongMetres(tracks),tracks,missingOperators:[a,b].filter(row=>!row.networks[k].published||!row.networks[k].complete).map(row=>row.operator)};
+   });
+   const modernMetres=strongMetres(combineTracks(networks[1].tracks,networks[2].tracks)),baseline=a.highMetres>=b.highMetres?a:b;
+   pairs.push({operators:[a.operator,b.operator],tracks,networks,highMetres,modernMetres,longestGapMetres:longestGap(tracks),extraMetres:Math.max(0,highMetres-baseline.highMetres),baselineOperator:baseline.operator,partial:networks.some(n=>n.missingOperators.length)});
+  }
+  return pairs;
+ }
  function analyse(coordinates,onProgress=()=>{}){
   if(!Array.isArray(coordinates)||coordinates.length<2||coordinates.length>50000||coordinates.some(p=>p.length<2||!Number.isFinite(p[0])||!Number.isFinite(p[1])||Math.abs(p[0])>180||Math.abs(p[1])>90))throw new Error('Traçado de rota inválido.');
   const segments=[];let total=0,insideLength=0;
@@ -1245,14 +1282,13 @@ function createRouteCoverageEngine(layers,operators,limits,statePolygons,predica
     const lr=merge(low),hr=merge(high);row.lowMetres+=measure(lr)*seg.len;row.highMetres+=measure(hr)*seg.len;row.modernMetres+=measure(merge(modern))*seg.len;row.tracks.push(...partition(seg.allowed,lr,hr,seg.a,seg.b,seg.offset,seg.len));
     if(s%250===0)onProgress((o+s/segments.length)/operators.length);
    }
-   row.longestGapMetres=0;let gap=0,lastEnd=-1;
-   for(const t of row.tracks){if(t.band!==2){gap=t.start-lastEnd<.01?gap+t.end-t.start:t.end-t.start;row.longestGapMetres=Math.max(row.longestGapMetres,gap);}else gap=0;lastEnd=t.end;}
+   row.longestGapMetres=longestGap(row.tracks);
    for(const n of networks){delete n.lo;delete n.hi;}
    rows.push(row);onProgress((o+1)/operators.length);
   }
-  return {distanceMetres:total,insideMetres:insideLength,outsideMetres:Math.max(0,total-insideLength),rows,method:'intersecao_vetorial',segmentCount:segments.length};
+  return {distanceMetres:total,insideMetres:insideLength,outsideMetres:Math.max(0,total-insideLength),rows,pairs:combinePairs(rows),method:'intersecao_vetorial',segmentCount:segments.length};
  }
- return {analyse,ranges,merge,distance};
+ return {analyse,ranges,merge,distance,combineTracks};
 }
 
 function routeAnalysisWorker(){
@@ -1269,7 +1305,7 @@ function coverageRecommendation(networks,metres=1){
 }
 function createRouteUI({map,datasets,operators,limits,statePolygons,name,color,mobile,openPanel,unpack,showOnMap}){
  const el=id=>document.getElementById(id),cities=ROUTE_CITIES,normal=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLocaleLowerCase('pt-BR');
- let endpoints={from:null,to:null,via:null},pick=null,worker=null,pending=null,jobId=0,generation=0,abort=null,routeOptions=[],activeResult=null,lineGroup=null,graphPromise=null,lastRequest=0;
+ let endpoints={from:null,to:null,via:null},pick=null,worker=null,pending=null,jobId=0,generation=0,abort=null,routeOptions=[],activeResult=null,lineGroup=null,graphPromise=null,lastRequest=0,comparisonMode='single';
  const cache=new Map(),inputs={from:el('route-from'),to:el('route-to'),via:el('route-via')};
  const km=n=>new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(n/1000)+' km';
  function status(text){el('route-status').textContent=text;}
@@ -1324,18 +1360,45 @@ function createRouteUI({map,datasets,operators,limits,statePolygons,name,color,m
   L.polyline(coords,{pane:'routes',color:'#f8fafc',weight:7,opacity:.9,interactive:false}).addTo(lineGroup);L.polyline(coords,{pane:'routes',color:'#296ee7',weight:4,opacity:1,interactive:false}).addTo(lineGroup);
   if(row){const tracks=network?row.networks.find(n=>n.technology===network)?.tracks:row.tracks;const paths=[];for(const t of tracks||[]){const last=paths.at(-1);if(last&&last.band===t.band&&Math.abs(last.end-t.start)<.01){last.points.push([t.b[1],t.b[0]]);last.end=t.end;}else paths.push({band:t.band,end:t.end,points:[[t.a[1],t.a[0]],[t.b[1],t.b[0]]]});}for(const p of paths)L.polyline(p.points,{pane:'routes',color:['#7c8895','#7c8895','#198856'][p.band],weight:5,opacity:1,interactive:false}).addTo(lineGroup);}
   for(const [i,point] of [[0,coords[0]],[1,coords.at(-1)]])L.marker(point,{pane:'routes',interactive:false,icon:L.divIcon({className:'route-pin',html:i?'B':'A',iconSize:[26,26],iconAnchor:[13,13]})}).addTo(lineGroup);
-  el('route-map-label').hidden=false;el('route-map-label').textContent=row?name(row.operator)+' · '+(network||'qualquer rede'):'Trajeto selecionado';
+  el('route-map-label').hidden=false;el('route-map-label').textContent=row?(row.operators?row.operators.map(name).join(' + '):name(row.operator))+' · '+(network||'qualquer rede'):'Trajeto selecionado';
  }
  function percentages(low,high,total){const covered=Math.max(0,Math.min(100,Math.round(100*low/total))),strong=Math.max(0,Math.min(covered,Math.round(100*high/total)));return [strong,covered-strong,100-covered];}
  function makeBar(parts){const bar=document.createElement('div');bar.className='route-bar';bar.setAttribute('aria-label',`${parts[0]}% sinal mais alto, ${parts[1]}% cobertura básica, ${parts[2]}% fora da mancha`);parts.forEach((n,i)=>{const segment=document.createElement('i');segment.className=['strong','basic','uncovered'][i];segment.style.width=n+'%';bar.append(segment);});return bar;}
+ function displayPairs(pairs,result,route,host){
+  const lead=pairs[0];if(!lead)return;
+  const titleOf=pair=>pair.operators.map(name).join(' + '),pct=metres=>Math.round(100*metres/result.insideMetres);
+  const suggestion=document.createElement('div');suggestion.className='route-recommendation';const title=document.createElement('strong');title.textContent=lead.recommendation.score>0?titleOf(lead)+' lidera a combinação de dois chips':'Nenhuma dupla tem cobertura prevista nesta rota nos dados conhecidos';suggestion.append(title,document.createTextNode('Prioridade: 4G, depois 5G e 3G. A cobertura combinada conta trechos atendidos por pelo menos uma das duas operadoras.'));host.append(suggestion);
+  const note=document.createElement('p');note.className='hint';note.textContent='As seis duplas são comparadas com os mesmos pesos do ranking individual. Dois chips não somam velocidades: os percentuais mostram a cobertura disponível ao usar qualquer um deles.';host.append(note);
+  for(const [position,pair] of pairs.entries()){
+   const card=document.createElement('article');card.className='route-pair-card';card.dataset.routePair=pair.operators.join(':');
+   const header=document.createElement('div');header.className='route-card-header';const heading=document.createElement('h3');heading.textContent=(position+1)+'º '+titleOf(pair);const value=document.createElement('strong');value.textContent=pct(pair.highMetres)+'%';header.append(heading,value);card.append(header);
+   const index=document.createElement('p');index.className='route-index';index.textContent='Índice de recomendação: '+(pair.recommendation.score===null?'sem dados':pair.recommendation.score.toFixed(1).replace('.',',')+'/100')+(pair.partial?' · dados parciais':'');card.append(index);
+   const caption=document.createElement('p');caption.className='route-card-caption';caption.textContent='cobertura combinada de ao menos uma rede publicada · '+pct(pair.modernMetres)+'% com 4G ou 5G';card.append(caption);
+   const gain=document.createElement('p');gain.className='route-pair-benefit';const pp=new Intl.NumberFormat('pt-BR',{maximumFractionDigits:1}).format(100*pair.extraMetres/result.insideMetres);gain.textContent='+'+pp+' pontos percentuais · '+km(pair.extraMetres)+' adicionais em relação a '+name(pair.baselineOperator)+' sozinha, a melhor cobertura total desta dupla.';card.append(gain);
+   const see=document.createElement('button');see.type='button';see.className='route-view';see.textContent='Ver dupla na rota';see.setAttribute('aria-label','Ver '+titleOf(pair)+' na rota');see.addEventListener('click',()=>{draw(route,pair);showOnMap(pair.operators,null);mobile.setSheet('peek');});card.append(see);
+   for(const net of pair.networks){
+    const network=document.createElement('div');network.className='route-network';const label=document.createElement('button');label.type='button';label.className='route-network-name';label.textContent=net.technology;label.setAttribute('aria-label','Ver '+titleOf(pair)+' '+net.technology+' na rota');
+    if(!net.published||!net.complete){label.disabled=true;network.append(label,document.createTextNode('Dados indisponíveis'));}
+    else{const p=percentages(net.highMetres,net.highMetres,result.insideMetres),detail=document.createElement('span');detail.className='route-network-percentage';detail.textContent=p[0]+'%';network.append(label,detail,makeBar(p));const bands=document.createElement('small');bands.textContent=net.missingOperators.length?'Dados apenas de '+pair.operators.filter(op=>!net.missingOperators.includes(op)).map(name).join(' e '):'Cobertura de pelo menos uma das duas operadoras';network.append(bands);label.addEventListener('click',()=>{draw(route,pair,net.technology);showOnMap(pair.operators,net.technology);mobile.setSheet('peek');});}card.append(network);
+   }
+   const gap=document.createElement('p');gap.className='hint';gap.textContent='Maior trecho contínuo fora da cobertura combinada: '+km(pair.longestGapMetres)+'.';card.append(gap);
+   if(pair.partial){const warning=document.createElement('p');warning.className='route-pair-partial';warning.textContent='Informação parcial: '+pair.networks.flatMap(n=>n.missingOperators.map(op=>name(op)+' '+n.technology)).join(', ')+'. A combinação usa apenas os dados conhecidos.';card.append(warning);}
+   host.append(card);
+  }
+ }
  function display(result,route){
   activeResult={result,route};el('route-edit').open=false;const host=el('route-results');host.hidden=false;host.replaceChildren();
   const summary=document.createElement('div');summary.className='route-summary';const distance=document.createElement('strong');distance.textContent=km(result.distanceMetres);summary.append(distance,document.createTextNode(' de trajeto · '+km(result.insideMetres)+' analisados no Ceará'));host.append(summary);
   const note=document.createElement('p');note.className='hint';note.textContent=route.source==='osrm'?'Trajeto rodoviário: OSRM / OpenStreetMap.':'Trajeto aproximado pelas vias principais locais. Não é navegação; acessos urbanos e restrições de conversão podem diferir. '+(route.snapMetres>100?'Os pontos foram ajustados à malha: '+km(route.snapMetres)+' de aproximação no total.':'');host.append(note);
   if(result.outsideMetres>100){const outside=document.createElement('p');outside.className='route-warning';outside.textContent=km(result.outsideMetres)+' fora do Ceará: sem dados de cobertura e excluídos dos percentuais.';host.append(outside);}
   const legend=document.createElement('div');legend.className='route-signal-legend';for(const [label,klass] of [['Sinal mais alto','strong'],['Fora do limiar mais alto','uncovered']]){const item=document.createElement('span'),dot=document.createElement('i');dot.className=klass;item.append(dot,document.createTextNode(label));legend.append(item);}host.append(legend);
-  const ranked=result.rows.map(row=>({...row,recommendation:coverageRecommendation(row.networks,result.insideMetres)})).sort((a,b)=>(b.recommendation.score??-1)-(a.recommendation.score??-1)||b.modernMetres-a.modernMetres);
-  if(ranked[0].recommendation.score>0){const suggestion=document.createElement('div');suggestion.className='route-recommendation';const title=document.createElement('strong');title.textContent=name(ranked[0].operator)+' lidera a recomendação';suggestion.append(title,document.createTextNode('Índice '+ranked[0].recommendation.score.toFixed(1).replace('.',',')+'/100. Prioridade: 4G, depois 5G e 3G.'));host.append(suggestion);}
+  const rank=rows=>rows.map(row=>({...row,recommendation:coverageRecommendation(row.networks,result.insideMetres)})).sort((a,b)=>(b.recommendation.score??-1)-(a.recommendation.score??-1)||b.modernMetres-a.modernMetres||b.highMetres-a.highMetres||a.longestGapMetres-b.longestGapMetres);
+  const ranked=rank(result.rows),pairs=rank(result.pairs||[]),singleHost=document.createElement('div'),pairHost=document.createElement('div');singleHost.id='route-single-results';pairHost.id='route-pair-results';
+  const modes=document.createElement('div');modes.className='route-comparison';modes.setAttribute('role','group');modes.setAttribute('aria-label','Comparar chips na rota');
+  for(const [mode,label] of [['single','Uma operadora'],['pair','Dois chips']]){const button=document.createElement('button');button.type='button';button.dataset.routeComparison=mode;button.textContent=label;button.setAttribute('aria-controls',mode==='single'?singleHost.id:pairHost.id);button.addEventListener('click',()=>{comparisonMode=mode;updateComparison();});modes.append(button);}
+  function updateComparison(){singleHost.hidden=comparisonMode!=='single';pairHost.hidden=comparisonMode!=='pair';modes.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.routeComparison===comparisonMode)));}
+  host.prepend(modes);host.append(singleHost,pairHost);updateComparison();displayPairs(pairs,result,route,pairHost);
+  if(ranked[0].recommendation.score>0){const suggestion=document.createElement('div');suggestion.className='route-recommendation';const title=document.createElement('strong');title.textContent=name(ranked[0].operator)+' lidera a recomendação';suggestion.append(title,document.createTextNode('Índice '+ranked[0].recommendation.score.toFixed(1).replace('.',',')+'/100. Prioridade: 4G, depois 5G e 3G.'));singleHost.append(suggestion);}
   for(const [position,row] of ranked.entries()){
    const card=document.createElement('article');card.className='route-card';card.dataset.routeOperator=row.operator;const header=document.createElement('div');header.className='route-card-header';const title=document.createElement('h3'),dot=document.createElement('i');dot.className='swatch';dot.style.background=color(row.operator);title.append(dot,document.createTextNode((position+1)+'º '+name(row.operator)));const value=document.createElement('strong');value.textContent=Math.round(100*row.highMetres/result.insideMetres)+'%';header.append(title,value);card.append(header);
    const index=document.createElement('p');index.className='route-index';index.textContent='Índice de recomendação: '+(row.recommendation.score===null?'sem dados':row.recommendation.score.toFixed(1).replace('.',',')+'/100')+(row.recommendation.missing.length?' · dados parciais: '+row.recommendation.missing.join(', ')+' não publicado':'');card.append(index);
@@ -1346,10 +1409,10 @@ function createRouteUI({map,datasets,operators,limits,statePolygons,name,color,m
     if(!net.published||!net.complete){label.disabled=true;network.append(label,document.createTextNode(!net.published?'Não publicado':'Dados indisponíveis'));}
     else{const p=percentages(net.highMetres,net.highMetres,result.insideMetres),detail=document.createElement('span');detail.className='route-network-percentage';detail.textContent=p[0]+'%';network.append(label,detail,makeBar(p));const bands=document.createElement('small');bands.textContent=`${p[0]}% no limiar mais alto · ${p[2]}% fora`;network.append(bands);label.addEventListener('click',()=>{draw(route,row,net.technology);showOnMap(row.operator,net.technology);mobile.setSheet('peek');});}card.append(network);
    }
-   const gap=document.createElement('p');gap.className='hint';gap.textContent='Maior trecho contínuo fora das manchas publicadas: '+km(row.longestGapMetres)+'.';card.append(gap);host.append(card);
+   const gap=document.createElement('p');gap.className='hint';gap.textContent='Maior trecho contínuo fora das manchas publicadas: '+km(row.longestGapMetres)+'.';card.append(gap);singleHost.append(card);
   }
   const method=document.createElement('p');method.className='route-method';method.textContent='Recomendação: pesos 60% para 4G, 30% para 5G e 10% para 3G. Somente os limiares mais altos entram no índice e nos percentuais: ≥ −82 dBm em 3G e ≥ −90 dBm em 4G/5G. Dados não publicados são excluídos e os pesos restantes são normalizados; a operadora fica marcada como informação parcial. O índice é uma preferência ponderada, não velocidade medida. Percentuais pelo comprimento do trajeto nos polígonos originais da Anatel, arredondados a 1%. Sem amostragem regular de pontos. São previsões em ambiente aberto, sem garantia de velocidade ou sinal dentro do veículo. Redes não publicadas não recebem 0%.';host.append(method);
-  draw(route);status('Análise concluída. Escolha uma operadora ou rede para destacar no trajeto.');
+  draw(route);status('Análise concluída. Compare uma operadora ou dois chips e destaque a cobertura no trajeto.');
  }
  async function choose(index){const route=routeOptions[index],version=generation;el('route-submit').disabled=true;el('route-cancel').hidden=false;document.querySelectorAll('[data-route-option]').forEach(b=>b.disabled=true);try{status('Preparando análise de cobertura…');const result=route.analysis||await analyse(route.geometry.coordinates);if(version!==generation)return;route.analysis=result;display(result,route);document.querySelectorAll('[data-route-option]').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.routeOption)===index)));mobile.setSheet('half');map.stop();map.fitBounds(L.latLngBounds(route.geometry.coordinates.map(p=>[p[1],p[0]])),mobile.fitOptions());}catch(error){if(version===generation)status(error.message);}finally{if(version===generation){el('route-submit').disabled=false;el('route-cancel').hidden=true;document.querySelectorAll('[data-route-option]').forEach(b=>b.disabled=false);}}}
  el('route-form').addEventListener('submit',async e=>{e.preventDefault();let version=generation;try{const from=resolve('from'),to=resolve('to'),via=resolve('via',false);if(map.distance([from.coordinates[1],from.coordinates[0]],[to.coordinates[1],to.coordinates[0]])<100)throw new Error('Escolha origem e destino diferentes, a pelo menos 100 m.');document.activeElement?.blur();invalidate();version=generation;el('route-edit-summary').textContent=from.label+' → '+to.label;el('route-submit').disabled=true;el('route-cancel').hidden=false;const options=await obtain(from.coordinates,to.coordinates,via?.coordinates,!el('route-online').checked);if(version!==generation)return;routeOptions=options;const alternatives=el('route-alternatives');alternatives.replaceChildren();routeOptions.forEach((r,i)=>{const b=document.createElement('button');b.type='button';b.dataset.routeOption=i;b.textContent='Opção '+(i+1)+(r.distance?' · '+km(r.distance):' · vias locais');b.addEventListener('click',()=>choose(i));alternatives.append(b);});await choose(0);}catch(error){if(version===generation){status(error.message);el('route-submit').disabled=false;el('route-cancel').hidden=true;}}});
@@ -1533,7 +1596,7 @@ try {
  el('all-operators').addEventListener('click',()=>{el('map-view').value='count';selected.clear();operators.forEach(op=>selected.add(op));document.querySelectorAll('[data-operator]').forEach(c=>c.checked=true);render();});
  el('map-view').addEventListener('change',()=>{if(el('map-view').value==='operator'){const op=el('detail-operator').value;selected.clear();selected.add(op);document.querySelectorAll('[data-operator]').forEach(c=>c.checked=c.dataset.operator===op);}render();});
  el('detail-operator').addEventListener('change',()=>{selected.clear();selected.add(el('detail-operator').value);document.querySelectorAll('[data-operator]').forEach(c=>c.checked=selected.has(c.dataset.operator));render();});
- routes=createRouteUI({map,datasets,operators,limits,statePolygons:data.statePolygons,name,color,mobile,openPanel,unpack,showOnMap:(op,t)=>{el('map-view').value='operator';el('detail-operator').value=op;selected.clear();selected.add(op);document.querySelectorAll('[data-operator]').forEach(c=>c.checked=c.dataset.operator===op);technologies.clear();(t?[t]:['3G','4G','5G']).forEach(n=>technologies.add(n));applyTechs();}});
+ routes=createRouteUI({map,datasets,operators,limits,statePolygons:data.statePolygons,name,color,mobile,openPanel,unpack,showOnMap:(op,t)=>{const ops=Array.isArray(op)?op:[op];el('map-view').value=ops.length===1?'operator':'count';el('detail-operator').value=ops[0];selected.clear();ops.forEach(o=>selected.add(o));document.querySelectorAll('[data-operator]').forEach(c=>c.checked=selected.has(c.dataset.operator));technologies.clear();(t?[t]:['3G','4G','5G']).forEach(n=>technologies.add(n));applyTechs();}});
  updateThresholdOptions();render();focus();drawLabels();window.coverageApp={queryPoint,selectPoint,setTech,toggleTech,openPanel,state:()=>({tech:chosen().join(' + '),technologies:chosen(),level,selected:[...selected],point,zoom:map.getZoom(),sheet:mobile.state()}),map,coverage,mobile,route:routes};await coverage.firstPaint;el('loading').hidden=true;window.coverageReady=true;
 }catch(error){el('loading-text').textContent='Não foi possível abrir os dados: '+error.message;console.error(error);window.coverageError=error.message;}
 })();
