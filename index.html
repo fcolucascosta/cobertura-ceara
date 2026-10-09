@@ -31,7 +31,9 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 -->
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#eaf0f4" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#0f1a23" media="(prefers-color-scheme:dark)">
 <title>Cobertura móvel do Ceará</title>
 <style>/* required styles */
 
@@ -710,23 +712,75 @@ button,input,select{font:inherit}button{cursor:pointer;min-height:44px;border:0;
 @media(max-width:760px){header{padding:0 16px;height:74px;gap:8px}.brand{gap:9px}.brand h1{font-size:20px}.brand p{font-size:10px;max-width:180px}.brand-mark{width:38px;height:38px;font-size:24px;border-radius:14px 14px 5px 14px}#sources-button{font-size:10px;padding:8px 11px;min-height:40px;max-width:90px}.layout{height:auto;display:flex;flex-direction:column;padding:0 10px 10px;gap:10px}.map-shell{order:0;height:52dvh;min-height:330px;border-radius:24px}aside{order:1;padding:17px;border-radius:24px;overflow:visible}.panel-nav{position:sticky;top:8px;z-index:600;margin-bottom:20px;box-shadow:0 1px 8px #20303508}.panel-title h2{font-size:25px}.map-hud{left:60px;top:12px}.map-legend{left:12px;bottom:25px;font-size:10px;padding:11px 12px;max-width:calc(100% - 24px);border-radius:17px}.legend-caption{font-size:9px;max-width:280px}.legend-operators{gap:7px 12px}.chip{font-size:10px;padding:10px 12px}.coords{max-width:450px}.leaflet-control-attribution{max-width:95vw;line-height:1.2;font-size:8px}.leaflet-top .leaflet-control{margin:12px}.section{margin-bottom:16px;padding-bottom:16px}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+<style>.mobile-search,.mobile-map-actions,.sheet-handle,.mobile-only{display:none}
+.advanced{margin-top:10px}.advanced>summary{display:none;cursor:pointer;list-style:none}.advanced>summary::-webkit-details-marker{display:none}
+@media(max-width:760px),(max-height:500px) and (pointer:coarse){
+ html,body{height:var(--app-height,100dvh);overflow:hidden;overscroll-behavior:none}
+ body{--sheet-height:148px;--viewport-top:0px;--keyboard-gap:0px}
+ header{display:none}.layout{position:fixed;top:var(--viewport-top);left:0;width:100%;height:var(--app-height,100dvh);display:block;padding:0;margin:0}
+ .map-shell{position:absolute;inset:0;width:100%;height:100%;min-height:0;border-radius:0}.mobile-only{display:block}
+ .mobile-search{display:block;position:fixed;top:calc(var(--viewport-top) + env(safe-area-inset-top,0px) + 12px);left:12px;right:12px;z-index:1100}
+ .search-field{height:54px;display:flex;align-items:center;gap:9px;padding:3px 5px 3px 16px;background:var(--surface);border-radius:28px;box-shadow:0 4px 20px #263b4420}
+ .search-field>span{font-size:28px;color:var(--accent)}.search-field input{width:100%;min-width:0;height:46px;border:0;outline:0;background:transparent;font-size:16px;color:var(--ink);padding:0}.search-field input:focus-visible{outline:0}
+ .search-field:focus-within{outline:2px solid #7297a5;outline-offset:2px}.search-field button{flex:none;width:46px;height:46px;font-size:26px;min-height:46px;padding:0;border-radius:50%;background:var(--accent-container);color:#174653}
+ #place-suggestions{background:var(--surface);margin-top:8px;border-radius:20px;padding:6px;box-shadow:0 6px 20px #20303520;max-height:calc(var(--app-height,100dvh) - 210px);overflow:auto}
+ .place-option{width:100%;display:block;min-height:48px;text-align:left;background:transparent;font-size:14px;border-radius:14px;padding:12px 16px;font-weight:500}.place-option[aria-selected=true]{background:var(--accent-container)}
+ #location-status{font-size:12px;background:var(--surface);box-shadow:0 3px 12px #20303515;padding:10px 14px;border-radius:16px;line-height:1.45;margin:8px 0}
+ #control-sheet{position:fixed;z-index:1000;left:0;right:0;bottom:var(--keyboard-gap);height:var(--sheet-height);max-height:calc(var(--app-height,100dvh) - 88px);display:flex;flex-direction:column;border-radius:28px 28px 0 0;padding:0 0 env(safe-area-inset-bottom,0px);overflow:hidden;box-shadow:0 -5px 30px #20303518;transition:height .28s var(--ease);will-change:height}
+ #control-sheet.is-dragging{transition:none}.sheet-handle{display:block;flex:none;width:100%;height:70px;min-height:70px;padding:10px 20px 9px;background:transparent;border-radius:28px 28px 0 0;touch-action:none;user-select:none;text-align:left;font-weight:500}
+ .sheet-handle:hover{background:transparent}.sheet-handle:active{transform:none;border-radius:28px 28px 0 0}.sheet-grip{display:block;width:34px;height:4px;border-radius:6px;background:#becbd3;margin:0 auto 11px}
+ .sheet-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}.sheet-heading strong{display:block;font-size:15px;letter-spacing:-.2px}.sheet-heading #sheet-summary{display:block;font-size:11px;color:var(--muted);margin-top:3px}#sheet-arrow{font-size:23px;color:var(--accent)}
+ .panel-nav{position:static;flex:none;margin:0 16px 12px;padding:4px;min-height:52px;box-shadow:none}.panel-nav button{min-height:44px;font-size:13px}.sheet-scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:0 16px 20px;scrollbar-width:thin}
+ #control-sheet[data-sheet=peek] .sheet-scroll{visibility:hidden}.panel-title{display:none}.section{padding-bottom:14px;margin-bottom:14px}.section h2{font-size:13px;margin-bottom:9px}.tabs button{min-height:48px;height:48px;font-size:17px}.hint{font-size:11px;margin:8px 0;line-height:1.5}
+ #operators{display:grid;grid-template-columns:1fr 1fr;gap:7px}.operator{min-width:0;gap:2px;margin:0;padding:3px 5px;min-height:52px;border-radius:17px;background:#e8eef3}.operator:has(input:checked){background:#dbeaf0}.operator label{position:relative;min-width:0;gap:5px;font-size:12px;min-height:46px;padding-left:4px;white-space:nowrap}.operator input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}.operator:focus-within{outline:2px solid #567f98;outline-offset:2px}.operator label:has(input:checked)::after{content:'\2713';font-size:10px;color:#335969}.operator .solo{min-width:40px;min-height:46px;padding:4px 5px;font-size:9px}.operator .swatch{width:8px;height:8px}.op-head .text-button{min-height:44px;padding:7px}
+ .advanced{border-radius:16px;background:#edf2f6;padding:0 12px;margin:12px 0}.advanced>summary{display:flex;justify-content:space-between;align-items:center;min-height:48px;font-size:12px;font-weight:650;padding:10px 0}.advanced[open]{padding-bottom:12px}.advanced .tone-note{font-size:11px;padding:10px;margin-top:12px}.advanced .label{margin-top:5px}#mobile-sources{min-height:44px;margin-top:8px;padding:8px 0}.coordinate-options .coords input{font-size:16px}.notice{font-size:10px;margin:12px 0 0}.check{min-height:44px;font-size:12px}
+ .map-hud{top:calc(env(safe-area-inset-top,0px) + 82px);left:12px;right:70px;gap:5px;flex-wrap:wrap}.chip{font-size:10px;padding:9px 11px}.leaflet-top .leaflet-control{margin-top:calc(env(safe-area-inset-top,0px) + 82px);margin-right:12px}.leaflet-bar a{width:44px!important;height:44px!important;line-height:44px!important}.leaflet-control-attribution{max-width:100vw;bottom:calc(var(--sheet-height) + 1px);font-size:7px;background:#ffffffe0!important;transition:bottom .28s var(--ease)}
+ .mobile-map-actions{display:flex;position:fixed;bottom:calc(var(--keyboard-gap) + var(--sheet-height) + 18px);right:12px;gap:8px;z-index:700;transition:bottom .28s var(--ease)}.mobile-map-actions button{min-height:48px;box-shadow:0 3px 12px #20303516;background:var(--surface);font-size:12px;padding:10px 17px}.mobile-map-actions #recenter{width:48px;padding:0;font-size:25px;background:var(--accent-container)}
+ .map-legend{display:none;left:12px;bottom:calc(var(--sheet-height) + 78px);max-width:calc(100% - 24px);padding:12px 14px;border-radius:20px;pointer-events:auto;transition:bottom .28s var(--ease)}body.legend-open .map-legend{display:block}.legend-operators{font-size:11px}.legend-caption{font-size:10px;max-width:320px}.legend-operators .swatch{width:9px;height:9px}
+ body:has(#control-sheet[data-sheet=full]) .mobile-map-actions,body:has(#control-sheet[data-sheet=full]) .map-legend{visibility:hidden}
+ #results{display:none}#point-name{font-size:11px;margin-top:12px}.point-heading{margin-bottom:7px}#point-summary{margin-top:10px;font-size:11px;padding:10px}.result-card{background:#eaf0f5;border-radius:18px;padding:12px;margin:8px 0}.result-card.is-unselected{opacity:.7}.result-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:13px;font-weight:700}.result-card-header>span{display:flex;align-items:center;gap:7px}.result-card-header small{font-size:10px;color:var(--muted);font-weight:500}.network-badges{display:flex;gap:6px;margin-top:10px}.network-badge{flex:1;min-width:0;border-radius:10px;padding:7px;background:#dcebe3;font-size:9px;line-height:1.3;color:#215942}.network-badge strong{display:block;font-size:11px;margin-bottom:3px}.network-badge.no{background:#e1e7ed;color:#596477}.network-badge.missing{background:#f0e7d6;color:#806224}
+ dialog{max-height:calc(var(--app-height,100dvh) - 32px);overflow:auto;padding:22px}.loading{padding-bottom:var(--sheet-height)}.loading h2{font-size:20px}
+}
+</style>
+<style>@media(prefers-color-scheme:dark){
+ :root{color-scheme:dark;--ink:#e8edf3;--muted:#a4b5c5;--line:#354554;--accent:#a0d0dc;--accent-container:#284c59;--surface:#182631;--soft:#0f1a23;--map-water:#111f24}
+ body{background:var(--soft)}.brand-mark{background:#355f6b;color:#d7f2f7}.header-note{background:#223e33;color:#a6d8bb}.header-note::before{background:#8ac5a2}
+ button{background:#283b49;color:var(--ink)}button:hover{background:#344c5a}button.primary{background:#9cd1dd;color:#10323e}.panel-nav{background:#223440}.panel-nav button[aria-selected=true]{background:var(--accent-container);color:#d2edf4}
+ .tabs button{background:#2a3c49}.tabs button[aria-pressed=true]{background:#a0d0dc;color:#113541}.operator{background:#243744}.solo{color:var(--muted)}.solo:hover{background:#365161}
+ select,input[type=number]{background:#233743;color:var(--ink)}.tone-note{background:#243f49;color:#bddae4}output{background:#304755}.count{background:#203d33}.yes{color:#9bd4b6}.no{color:#a4b5c5}.missing{color:#e1c48a}
+ #map{background:#111f24}.chip,.map-legend{background:#182631f2;box-shadow:0 3px 14px #0004}.loading{background:#14232cf5}dialog{background:var(--surface)}dialog::backdrop{background:#0009}
+ .leaflet-tooltip.place-label{background:#14252cf0!important;color:#dbe8ee}.leaflet-tooltip.road-label{background:#394333ef!important;color:#e2e6d2;border-color:#7b8466!important}
+ .leaflet-bar a{background:#1d303b!important;color:#c9e7ef!important;border-color:#354554!important}.leaflet-control-attribution{background:#14232ce0!important;color:#c9d6df}.leaflet-control-attribution a{color:#a0d0dc}
+ .text-button,.source-link{color:#a0d0dc}.notice a,dialog a{color:#a0d0dc}button:focus-visible,input:focus-visible,select:focus-visible{outline-color:#b0dce8}
+ @media(max-width:760px),(max-height:500px) and (pointer:coarse){
+  .search-field{box-shadow:0 4px 20px #0004}.search-field input{color:var(--ink)}.search-field button{background:#284c59;color:#d1eef5}.search-field:focus-within{outline-color:#9cd1dd}#place-suggestions{box-shadow:0 6px 20px #0005}.place-option[aria-selected=true]{background:#284c59}
+  #control-sheet{box-shadow:0 -5px 30px #0004}.sheet-grip{background:#617883}#operators .operator{background:#243744}#operators .operator:has(input:checked){background:#2b4b5a}.operator label:has(input:checked)::after{color:#b6e0ed}
+  .advanced{background:#223440}.mobile-map-actions button{background:#182631;color:#e8edf3}.mobile-map-actions #recenter{background:#284c59;color:#d1eef5}.result-card{background:#223744}.network-badge{background:#2b4b3b;color:#b5e4ca}.network-badge.no{background:#34434e;color:#b8c8d6}.network-badge.missing{background:#514633;color:#ead4a1}
+ }
+}
+</style>
 <style>.tone-strip{display:inline-flex!important;gap:1px!important;border-radius:4px;overflow:hidden;margin-left:1px}.tone-strip i{width:7px;height:10px}.network-detail{display:block;font-size:11px;line-height:1.55}.place-label{background:#ffffffe8!important;border:0!important;box-shadow:none!important;font-weight:600;font-size:11px;color:#273e46;padding:2px 5px!important}.road-label{background:#fffbdfee!important;border:1px solid #9a9571!important;border-radius:3px;font-size:10px;padding:1px 4px!important;box-shadow:none!important}.leaflet-tooltip::before{display:none}</style>
 </head>
 <body>
+<div class="mobile-search"><div class="search-field"><span aria-hidden="true">⌕</span><input id="place-search" type="search" role="combobox" aria-label="Buscar município" aria-autocomplete="list" aria-expanded="false" aria-controls="place-suggestions" placeholder="Buscar município" autocomplete="off"><button id="locate" type="button" aria-label="Minha localização" title="Minha localização">⌖</button></div><div id="place-suggestions" role="listbox" aria-label="Municípios encontrados" hidden></div><p id="location-status" role="status" hidden></p></div>
 <header><div class="brand"><span class="brand-mark" aria-hidden="true">⌖</span><div><h1>Cobertura Ceará</h1><p>Telefonia móvel · Claro, Vivo, TIM e Brisanet</p></div></div><div style="display:flex;align-items:center;gap:12px"><span class="header-note">Disponível offline</span><button id="sources-button" type="button">Fontes e critérios</button></div></header>
 <div class="layout">
-<aside aria-label="Comparação e controles do mapa">
+<aside id="control-sheet" aria-label="Comparação e controles do mapa" data-sheet="peek">
+ <button id="sheet-toggle" class="sheet-handle" type="button" aria-label="Expandir controles" aria-expanded="false"><span class="sheet-grip" aria-hidden="true"></span><span class="sheet-heading"><span><strong id="sheet-title">Cobertura Ceará</strong><span id="sheet-summary">4G · 4 operadoras</span></span><span id="sheet-arrow" aria-hidden="true">⌃</span></span></button>
  <nav class="panel-nav" aria-label="Controles do mapa" role="tablist"><button type="button" role="tab" data-open-panel="layers" aria-selected="true" aria-controls="panel-layers">Camadas</button><button type="button" role="tab" data-open-panel="region" aria-selected="false" aria-controls="panel-region">Região</button><button type="button" role="tab" data-open-panel="point" aria-selected="false" aria-controls="panel-point">No ponto</button></nav>
+ <div class="sheet-scroll" id="sheet-scroll">
  <div data-panel="layers" id="panel-layers" role="tabpanel"><div class="panel-title"><p class="eyebrow">Redes & operadoras</p><h2>Encontre seu sinal.</h2><p>Combine redes e compare a cobertura que faz sentido para você.</p></div>
- <section class="section"><h2>Quais redes você quer ver?</h2><div class="tabs" aria-label="Selecionar uma ou mais tecnologias"><button type="button" data-tech="3G" aria-label="3G" aria-pressed="false">3G</button><button type="button" data-tech="4G" aria-label="4G" aria-pressed="true">4G</button><button type="button" data-tech="5G" aria-label="5G" aria-pressed="false">5G</button></div><p class="hint" id="combination-label">4G selecionado</p><label class="label" for="threshold">Faixa mostrada no mapa</label><select id="threshold"></select><p class="hint dates" id="published-date"></p></section>
- <section class="section"><div class="op-head"><h2>Operadoras</h2><button id="all-operators" class="text-button" type="button">Selecionar todas</button></div><div id="operators"></div><div class="range-head"><label for="opacity">Transparência das manchas</label><output id="opacity-label">45%</output></div><input id="opacity" type="range" min="10" max="85" value="45" aria-label="Opacidade da cobertura"><p class="hint">Uma cor por operadora. Use “Só esta” para comparar com mais clareza.</p><div class="tone-note">Em áreas exclusivas, o tom é claro. Nas sobreposições, 4G fica intermediário e 5G mais forte. O tom distingue redes; não mede intensidade de sinal.</div></section>
+ <section class="section"><h2>Quais redes você quer ver?</h2><div class="tabs" aria-label="Selecionar uma ou mais tecnologias"><button type="button" data-tech="3G" aria-label="3G" aria-pressed="false">3G</button><button type="button" data-tech="4G" aria-label="4G" aria-pressed="true">4G</button><button type="button" data-tech="5G" aria-label="5G" aria-pressed="false">5G</button></div><p class="hint" id="combination-label">4G selecionado</p></section>
+ <section class="section"><div class="op-head"><h2>Operadoras</h2><button id="all-operators" class="text-button" type="button">Selecionar todas</button></div><div id="operators"></div><p class="hint">Uma cor por operadora. Use “Só esta” para comparar com mais clareza.</p></section>
+ <details id="advanced-options" class="advanced" open><summary>Mais opções <span aria-hidden="true">⌄</span></summary><label class="label" for="threshold">Faixa mostrada no mapa</label><select id="threshold"></select><p class="hint dates" id="published-date"></p><div class="range-head"><label for="opacity">Transparência das manchas</label><output id="opacity-label">45%</output></div><input id="opacity" type="range" min="10" max="85" value="45" aria-label="Opacidade da cobertura"><div class="tone-note">Em áreas exclusivas, o tom é claro. Nas sobreposições, 4G fica intermediário e 5G mais forte. O tom distingue redes; não mede intensidade de sinal.</div><button id="mobile-sources" class="mobile-only text-button" type="button">Fontes e critérios</button></details>
  </div><div data-panel="region" id="panel-region" role="tabpanel" hidden><div class="panel-title"><p class="eyebrow">Explore o Ceará</p><h2>Mais perto de você.</h2><p>Vá direto ao seu município ou explore o trecho Sobral–Fortaleza.</p></div>
  <section class="section"><h2>Localização</h2><label class="label" for="municipality">Encontrar município</label><select id="municipality"><option value="">Escolha um município</option></select><div class="buttons"><button id="corridor" type="button">Sobral–Fortaleza</button><button id="whole-state" type="button">Ceará inteiro</button></div><label class="check"><input id="streets" type="checkbox" checked>Vias principais · incluídas no arquivo</label><label class="check"><input id="boundaries" type="checkbox" checked>Limites dos municípios</label><p class="hint" id="background-status">Mapa e consultas funcionam sem internet.</p></section>
- </div><div data-panel="point" id="panel-point" role="tabpanel" hidden><div class="panel-title"><p class="eyebrow">Compare no local</p><h2>Seu ponto no mapa.</h2><p>Toque no mapa para ver cada rede disponível naquele ponto.</p></div><section class="section"><div class="point-heading"><h2>Comparação no ponto</h2><span class="tiny" id="query-tech">4G</span></div><p class="hint">Clique no mapa ou informe as coordenadas.</p><form id="point-form"><div class="coords"><label for="latitude">Latitude<input type="number" id="latitude" min="-90" max="90" step="any" required placeholder="-3.7000"></label><label for="longitude">Longitude<input type="number" id="longitude" min="-180" max="180" step="any" required placeholder="-39.0000"></label></div><button class="consult primary" type="submit">Consultar ponto</button></form><div id="point-name" aria-live="polite">Nenhum ponto selecionado.</div><table id="results" hidden><thead><tr><th>Operadora</th><th style="text-align:right">Sinal previsto</th></tr></thead><tbody></tbody></table><div id="point-summary" class="count" hidden></div></section>
+ </div><div data-panel="point" id="panel-point" role="tabpanel" hidden><div class="panel-title"><p class="eyebrow">Compare no local</p><h2>Seu ponto no mapa.</h2><p>Toque no mapa para ver cada rede disponível naquele ponto.</p></div><section class="section"><div class="point-heading"><h2>Comparação no ponto</h2><span class="tiny" id="query-tech">4G</span></div><p class="hint">Clique no mapa ou informe as coordenadas.</p><div id="mobile-results" class="mobile-only" aria-live="polite" hidden></div><details id="coordinate-options" class="advanced coordinate-options" open><summary>Coordenadas e consulta manual <span aria-hidden="true">⌄</span></summary><form id="point-form"><div class="coords"><label for="latitude">Latitude<input type="number" id="latitude" min="-90" max="90" step="any" required placeholder="-3.7000"></label><label for="longitude">Longitude<input type="number" id="longitude" min="-180" max="180" step="any" required placeholder="-39.0000"></label></div><button class="consult primary" type="submit">Consultar ponto</button></form></details><div id="point-name" aria-live="polite">Nenhum ponto selecionado.</div><table id="results" hidden><thead><tr><th>Operadora</th><th style="text-align:right">Sinal previsto</th></tr></thead><tbody></tbody></table><div id="point-summary" class="count" hidden></div></section>
  </div><p class="notice">As manchas são cálculos da Anatel, não medições no local. Não indicam velocidade nem garantem cobertura dentro de imóveis. <a class="source-link" href="https://sistemas.anatel.gov.br/se/public/cmap.php" target="_blank" rel="noopener">Consultar fonte</a>.</p>
-</aside>
-<main class="map-shell" aria-label="Mapa interativo de cobertura no Ceará"><div id="map" aria-label="Clique para comparar a cobertura neste ponto"></div><div class="map-hud"><span class="chip" id="map-label">4G · Ceará</span><span class="chip" id="drawing-status" aria-live="polite" hidden>Atualizando…</span></div><div class="map-legend"><strong id="legend-threshold">Cobertura prevista</strong><div class="legend-operators" id="legend-operators"></div><div class="legend-caption" id="overlap-legend" hidden></div><div class="legend-caption">Áreas sem cor ficam fora das manchas selecionadas.</div></div><div id="loading" class="loading"><div><div class="spinner" aria-hidden="true"></div><h2>Abrindo cobertura do Ceará</h2><p id="loading-text">Preparando os dados incluídos neste arquivo…</p></div></div></main>
+</div></aside>
+<main class="map-shell" aria-label="Mapa interativo de cobertura no Ceará"><div id="map" aria-label="Clique para comparar a cobertura neste ponto"></div><div class="map-hud"><span class="chip" id="map-label">4G · Ceará</span><span class="chip" id="drawing-status" aria-live="polite" hidden>Atualizando…</span></div><div class="map-legend" id="map-legend"><strong id="legend-threshold">Cobertura prevista</strong><div class="legend-operators" id="legend-operators"></div><div class="legend-caption" id="overlap-legend" hidden></div><div class="legend-caption">Áreas sem cor ficam fora das manchas selecionadas.</div></div><div id="loading" class="loading"><div><div class="spinner" aria-hidden="true"></div><h2>Abrindo cobertura do Ceará</h2><p id="loading-text">Preparando os dados incluídos neste arquivo…</p></div></div></main>
 </div>
+<div class="mobile-map-actions"><button id="legend-toggle" type="button" aria-expanded="false" aria-controls="map-legend">Legenda</button><button id="recenter" type="button" aria-label="Voltar a Sobral–Fortaleza" title="Voltar a Sobral–Fortaleza">↺</button></div>
 <dialog id="sources-dialog"><button class="close" id="close-sources" type="button" aria-label="Fechar fontes">Fechar</button><h2>Como ler o mapa</h2><p>A cor identifica a operadora. A união mantém áreas cobertas por qualquer rede selecionada. Uma área exclusiva usa o mesmo tom claro em 3G, 4G e 5G. Onde tecnologias da mesma operadora se sobrepõem, 4G usa o tom intermediário e 5G o tom forte. O tom representa a tecnologia mais recente na sobreposição, não a intensidade do sinal. A consulta mostra cada rede separadamente.</p><p>Os limiares são −102 e −82 dBm em 3G; −110 e −90 dBm em 4G e 5G. São previsões em ambiente aberto. O valor menos negativo indica sinal previsto mais alto dentro da mesma tecnologia.</p><p>A consulta usa os polígonos recortados do Ceará com as coordenadas originais exatas. A exibição é simplificada em 18 metros e desenhada em canvas. As vias principais, os municípios e as consultas estão dentro deste HTML e funcionam offline.</p><p>Esta versão usa a base da Anatel e não acrescenta cobertura de roaming automaticamente. Mapas comerciais e cobertura dentro de imóveis têm critérios diferentes.</p><h3>Dados incluídos</h3><div id="sources-details"></div><p id="excluded-operators"></p><p><a href="https://sistemas.anatel.gov.br/se/public/cmap.php" target="_blank" rel="noopener">Anatel / Mosaico</a> · <a href="https://servicodados.ibge.gov.br/api/docs/malhas?versao=3" target="_blank" rel="noopener">IBGE</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a></p></dialog>
 <script>/* @preserve
  * Leaflet 1.9.4, a JS library for interactive maps. https://leafletjs.com
@@ -762,6 +816,7 @@ function coverageRasterEngine(vectors,limits,palette,makeCanvas){
  function intersection(a,b){const c=scratch(),ctx=c.getContext('2d');ctx.drawImage(a,0,0);ctx.globalCompositeOperation='destination-in';ctx.drawImage(b,0,0);return c;}
  function tint(mask,color){const c=scratch(),ctx=c.getContext('2d');ctx.drawImage(mask,0,0);ctx.globalCompositeOperation='source-in';ctx.fillStyle=color;ctx.fillRect(0,0,c.width,c.height);return c;}
  return {paint(job){
+  if(job.palette)palette=job.palette;
   if(!view||view.key!==job.view.key)cache.clear();view=job.view;
   const final=scratch(),ctx=final.getContext('2d'),{ts,ops,level,opacity}=job.settings;ctx.globalAlpha=opacity;
   for(const op of ops){
@@ -794,6 +849,8 @@ function coverageRasterWorker(){
 /* Only finished frames are displayed; obsolete worker jobs are discarded. */
 function createCoverageRenderer(map,data,datasets,limits,colors){
  const shades={CLARO:['#f04b68','#d4224d','#8e1235'],VIVO:['#ad70e3','#8535bb','#511578'],TIM:['#559eef','#2179d2','#104c94'],BRISANET:['#3bb983','#168856','#075b3a']};
+ const darkShades={CLARO:['#eea0b0','#fa6688','#ff315e'],VIVO:['#c5a1e7','#b978ee','#ad4eff'],TIM:['#94bdef','#5aa9f6','#2897ff'],BRISANET:['#89d3b0','#4cca91','#1bc47b']};
+ const currentPalette=()=>matchMedia('(prefers-color-scheme:dark)').matches?darkShades:shades;
  const vectors=new Map([...datasets].map(([key,l])=>[key,l.vectors]));
  const Layer=L.Layer.extend({
   onAdd(){
@@ -809,14 +866,14 @@ function createCoverageRenderer(map,data,datasets,limits,colors){
   },
   onRemove(){map.off('moveend resize',this.reset,this);this.worker?.terminate();this.canvas.remove();},
   fallback(){this.worker?.terminate();this.worker=null;this.busy=false;this.engine=coverageRasterEngine(vectors,limits,shades,(w,h)=>{const c=document.createElement('canvas');c.width=w;c.height=h;return c;});this.reset();},
-  reset(){this.generation++;clearTimeout(this.statusTimer);this.statusTimer=setTimeout(()=>{if(this.paintedGeneration!==this.generation)document.getElementById('drawing-status').hidden=false;},180);this.queue();},
+  reset(){this.shades=currentPalette();this.generation++;clearTimeout(this.statusTimer);this.statusTimer=setTimeout(()=>{if(this.paintedGeneration!==this.generation)document.getElementById('drawing-status').hidden=false;},180);this.queue();},
   queue(){if(this.frame)return;this.frame=requestAnimationFrame(()=>{this.frame=0;this.schedule();});},
   configure(ts,ops,level,opacity){this.settings={ts,ops,level,opacity};this.reset();},
   schedule(){
    if(!this.settings)return;const size=map.getSize();if(!size.x||!size.y)return;
    const top=map.containerPointToLayerPoint([0,0]),origin=map.getPixelOrigin(),scale=256*2**map.getZoom(),ratio=Math.min(devicePixelRatio||1,1.5),b=map.getBounds();
    const view={key:`${map.getZoom()}:${top.x}:${top.y}:${size.x}:${size.y}:${origin.x}:${origin.y}`,width:Math.ceil(size.x*ratio),height:Math.ceil(size.y*ratio),cssWidth:size.x,cssHeight:size.y,top:[top.x,top.y],bounds:[b.getWest(),b.getSouth(),b.getEast(),b.getNorth()],k:scale*ratio,ox:(data.visualOrigin[0]*scale-origin.x-top.x)*ratio,oy:(data.visualOrigin[1]*scale-origin.y-top.y)*ratio};
-   this.pending={id:this.generation,view,settings:this.settings};this.dispatch();
+   this.pending={id:this.generation,view,settings:this.settings,palette:this.shades};this.dispatch();
   },
   dispatch(){
    if(this.busy||!this.pending)return;const job=this.pending;this.pending=null;this.busy=true;
@@ -832,7 +889,7 @@ function createCoverageRenderer(map,data,datasets,limits,colors){
   },
   async settled(){while(this.paintedGeneration!==this.generation){await new Promise(resolve=>setTimeout(resolve,15));}}
  });
- const layer=new Layer();layer.addTo(map);layer.shades=shades;return layer;
+ const layer=new Layer();layer.addTo(map);layer.shades=currentPalette();return layer;
 }
 
 function createBaseRenderer(map,data,streets,boundaries){
@@ -847,10 +904,100 @@ function createBaseRenderer(map,data,streets,boundaries){
   for(const kind of ['boundary','secondary','primary','trunk','motorway']){
    if(kind==='boundary'?!boundaries.checked:!streets.checked)continue;
    ctx.beginPath();for(const line of lines){const q=line.b;if(line.kind!==kind||q[0]>b[2]||q[2]<b[0]||q[1]>b[3]||q[3]<b[1])continue;let x0=Infinity,y0=Infinity;for(let i=0;i<line.coords.length;i++){const p=line.coords[i],x=p[0]*scale-origin.x-top.x,y=p[1]*scale-origin.y-top.y;if(i===0){ctx.moveTo(x,y);x0=x;y0=y;}else if(Math.abs(x-x0)+Math.abs(y-y0)>.7||i===line.coords.length-1){ctx.lineTo(x,y);x0=x;y0=y;}}}
-   ctx.strokeStyle=kind==='boundary'?'#8f9ca3':kind==='secondary'?'#b3b5ae':'#8c8e7b';ctx.lineWidth=kind==='boundary'?.65:kind==='trunk'||kind==='motorway'?2:1.2;ctx.globalAlpha=kind==='boundary'?.5:.85;ctx.stroke();
+   const dark=matchMedia('(prefers-color-scheme:dark)').matches;ctx.strokeStyle=kind==='boundary'?(dark?'#788e87':'#8f9ca3'):kind==='secondary'?(dark?'#728777':'#b3b5ae'):(dark?'#a9b59a':'#8c8e7b');ctx.lineWidth=kind==='boundary'?.65:kind==='trunk'||kind==='motorway'?2:1.2;ctx.globalAlpha=kind==='boundary'?.5:.85;ctx.stroke();
   }
  }});
  const layer=new Base();layer.addTo(map);return layer;
+}
+</script>
+<script>'use strict';
+function createMobileUX({map,data,onMunicipality,onFocus,onPoint,name,color}){
+ const el=id=>document.getElementById(id),media=matchMedia('(max-width:760px), (max-height:500px) and (pointer:coarse)'),sheet=el('control-sheet'),scroll=el('sheet-scroll'),handle=el('sheet-toggle');
+ let state='peek',drag=null,suppressClick=false,matches=[],active=-1,selectedPoint=null,resizeFrame=0,lastMobile=media.matches;
+ const viewport=()=>window.visualViewport?.height||innerHeight;
+ const safeBottom=()=>parseFloat(getComputedStyle(sheet).paddingBottom)||0;
+ const stops=()=>{const h=viewport(),peek=Math.min(148+safeBottom(),h*.35),full=Math.max(peek,h-88);return {peek,half:Math.max(peek,Math.min(full,h*.55)),full};};
+ const mobile=()=>media.matches;
+ function size(height){document.body.style.setProperty('--sheet-height',Math.round(height)+'px');}
+ function setSheet(next){
+  state=next;sheet.dataset.sheet=state;
+  if(!mobile()){scroll.inert=false;return;}
+  size(stops()[state]);scroll.inert=state==='peek';handle.setAttribute('aria-expanded',String(state!=='peek'));handle.setAttribute('aria-label',state==='peek'?'Expandir controles':state==='half'?'Expandir detalhes':'Recolher controles');el('sheet-arrow').textContent=state==='full'?'⌄':'⌃';
+ }
+ function ensurePointVisible(){
+  if(!mobile()||!selectedPoint)return;const p=map.latLngToContainerPoint(selectedPoint),h=stops()[state],bottom=map.getSize().y-h-35,top=112;
+  const targetY=Math.max(top,Math.min(Math.max(top,bottom),p.y));if(Math.abs(p.y-targetY)>1)map.panBy([0,p.y-targetY],{animate:false});
+ }
+ function panel(id){
+  el('sheet-title').textContent=id==='point'?'Comparar neste ponto':id==='region'?'Explore o Ceará':'Cobertura Ceará';
+  scroll.scrollTop=0;
+  if(mobile()){if(state==='peek')setSheet('half');if(id==='point'){setSheet('half');ensurePointVisible();}}
+ }
+ function fitOptions(){return mobile()?{paddingTopLeft:[20,100],paddingBottomRight:[20,stops()[state]+30],animate:false}:{padding:[24,24],animate:false};}
+ function summary(text){el('sheet-summary').textContent=text;}
+ function point(lat,lng){selectedPoint=[lat,lng];ensurePointVisible();}
+ function refreshViewport(){
+  if(resizeFrame)return;resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;
+   const vv=window.visualViewport,h=vv?.height||innerHeight,offset=vv?.offsetTop||0;
+   document.body.style.setProperty('--app-height',h+'px');document.body.style.setProperty('--viewport-top',offset+'px');document.body.style.setProperty('--keyboard-gap',Math.max(0,innerHeight-h-offset)+'px');
+   if(lastMobile!==mobile()){el('advanced-options').open=!mobile();el('coordinate-options').open=!mobile();lastMobile=mobile();}
+   if(mobile()){setSheet(state);map.zoomControl.setPosition('topright');}else{scroll.inert=false;map.zoomControl.setPosition('topleft');closeSearch();}
+   map.invalidateSize({pan:false});
+  });
+ }
+ handle.addEventListener('click',()=>{if(suppressClick){suppressClick=false;return;}const order=['peek','half','full'];setSheet(order[(order.indexOf(state)+1)%3]);ensurePointVisible();});
+ handle.addEventListener('pointerdown',e=>{if(!mobile()||e.button!==0)return;drag={id:e.pointerId,y:e.clientY,height:sheet.getBoundingClientRect().height,last:e.clientY,moved:false};handle.setPointerCapture(e.pointerId);sheet.classList.add('is-dragging');});
+ handle.addEventListener('pointermove',e=>{if(!drag||e.pointerId!==drag.id)return;const change=drag.y-e.clientY;drag.last=e.clientY;if(Math.abs(change)>6)drag.moved=true;const s=stops();size(Math.max(s.peek,Math.min(s.full,drag.height+change)));});
+ function endDrag(e){
+  if(!drag||e.pointerId!==drag.id)return;const previous=drag;drag=null;sheet.classList.remove('is-dragging');
+  if(e.type==='pointercancel'){setSheet(state);return;}
+  if(previous.moved){suppressClick=true;const h=sheet.getBoundingClientRect().height,entries=Object.entries(stops());entries.sort((a,b)=>Math.abs(a[1]-h)-Math.abs(b[1]-h));setSheet(entries[0][0]);ensurePointVisible();setTimeout(()=>suppressClick=false,300);}
+ }
+ handle.addEventListener('pointerup',endDrag);handle.addEventListener('pointercancel',endDrag);
+ handle.addEventListener('keydown',e=>{if(e.key==='ArrowUp'||e.key==='ArrowDown'){e.preventDefault();const order=['peek','half','full'],i=order.indexOf(state);setSheet(order[Math.max(0,Math.min(2,i+(e.key==='ArrowUp'?1:-1)))]);ensurePointVisible();}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&mobile()&&!el('sources-dialog').open){closeSearch();document.body.classList.remove('legend-open');el('legend-toggle').setAttribute('aria-expanded','false');setSheet('peek');}});
+ sheet.addEventListener('focusin',e=>{if(!mobile())return;if(e.target.matches('input[type=number],select')){setSheet('full');setTimeout(()=>e.target.scrollIntoView({block:'nearest'}),80);}});
+ sheet.addEventListener('toggle',e=>{if(mobile()&&e.target.open&&e.target.tagName==='DETAILS')setSheet('full');},true);
+ el('legend-toggle').addEventListener('click',()=>{const open=document.body.classList.toggle('legend-open');el('legend-toggle').setAttribute('aria-expanded',String(open));});
+ el('recenter').addEventListener('click',()=>{setSheet('peek');onFocus();});
+ el('mobile-sources').addEventListener('click',()=>el('sources-dialog').showModal());
+ const search=el('place-search'),list=el('place-suggestions'),normalize=text=>text.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLocaleLowerCase('pt-BR');
+ function closeSearch(){list.hidden=true;search.setAttribute('aria-expanded','false');search.removeAttribute('aria-activedescendant');}
+ function choose(place){setSheet('peek');search.value=place.name;closeSearch();search.blur();onMunicipality(place);}
+ function showSearch(){
+  const term=normalize(search.value.trim());matches=data.places.filter(p=>normalize(p.name).includes(term)).slice(0,8);active=-1;list.replaceChildren();
+  if(!matches.length){const empty=document.createElement('p');empty.className='hint';empty.textContent='Nenhum município encontrado.';list.append(empty);}
+  matches.forEach((place,i)=>{const option=document.createElement('button');option.type='button';option.id='place-option-'+i;option.className='place-option';option.setAttribute('role','option');option.setAttribute('aria-selected','false');option.textContent=place.name;option.addEventListener('click',()=>choose(place));list.append(option);});
+  list.hidden=false;search.setAttribute('aria-expanded','true');
+ }
+ search.addEventListener('input',showSearch);search.addEventListener('focus',()=>{setSheet('peek');showSearch();});
+ search.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSearch();return;}if(e.key==='Enter'){e.preventDefault();if(matches.length)choose(matches[Math.max(0,active)]);return;}if(!['ArrowDown','ArrowUp'].includes(e.key))return;e.preventDefault();if(list.hidden)showSearch();active=Math.max(0,Math.min(matches.length-1,active+(e.key==='ArrowDown'?1:-1)));list.querySelectorAll('[role=option]').forEach((b,i)=>b.setAttribute('aria-selected',String(i===active)));if(active>=0){search.setAttribute('aria-activedescendant','place-option-'+active);el('place-option-'+active).scrollIntoView({block:'nearest'});}});
+ document.addEventListener('pointerdown',e=>{if(!e.target.closest('.mobile-search'))closeSearch();});
+ const locationStatus=el('location-status');
+ function locationMessage(text){locationStatus.hidden=false;locationStatus.textContent=text;}
+ el('locate').addEventListener('click',()=>{
+  closeSearch();search.blur();if(!navigator.geolocation){locationMessage('Este navegador não oferece localização. Busque um município.');return;}
+  el('locate').disabled=true;locationMessage('Obtendo sua localização…');
+  navigator.geolocation.getCurrentPosition(position=>{el('locate').disabled=false;locationMessage('Localização aproximada · precisão de '+Math.round(position.coords.accuracy)+' m.');onPoint(position.coords.latitude,position.coords.longitude,true);},error=>{el('locate').disabled=false;locationMessage(error.code===1?'Localização não autorizada. Você pode buscar seu município.':'Não foi possível localizar você. Busque seu município.');},{timeout:12000,maximumAge:60000,enableHighAccuracy:false});
+ });
+ function renderResults(result,selected){
+  const container=el('mobile-results');container.hidden=false;container.replaceChildren();
+  for(const row of result.rows){
+   const card=document.createElement('article');card.className='result-card'+(!selected.has(row.operator)?' is-unselected':'');card.setAttribute('aria-label',name(row.operator));
+   const header=document.createElement('div');header.className='result-card-header';const title=document.createElement('span'),dot=document.createElement('i');dot.className='swatch';dot.style.background=color(row.operator);title.append(dot,document.createTextNode(name(row.operator)));const status=document.createElement('small');status.textContent=!result.inside?'Fora do Ceará':row.low?'Cobertura prevista':'Sem mancha prevista';header.append(title,status);card.append(header);
+   const badges=document.createElement('div');badges.className='network-badges';
+   for(const network of row.networks){
+    const badge=document.createElement('div');badge.className='network-badge';const tech=document.createElement('strong');tech.textContent=network.technology;let message;
+    if(!result.inside){message='Fora do recorte';badge.classList.add('no');}else if(!network.published){message='Não publicado';badge.classList.add('missing');}else if(!network.complete){message='Indisponível';badge.classList.add('missing');}else if(network.high){message='Sinal mais alto';badge.title='≥ '+network.highThreshold+' dBm';}else if(network.low){message='Cobertura';badge.title=network.lowThreshold+' a '+network.highThreshold+' dBm';}else{message='Sem mancha';badge.classList.add('no');}
+    badge.append(tech,document.createTextNode(message));badges.append(badge);
+   }
+   card.append(badges);container.append(card);
+  }
+ }
+ media.addEventListener('change',refreshViewport);window.addEventListener('resize',refreshViewport);window.visualViewport?.addEventListener('resize',refreshViewport);window.visualViewport?.addEventListener('scroll',refreshViewport);
+ // Avoid waiting one frame for initial fitBounds padding.
+ document.body.style.setProperty('--app-height',viewport()+'px');el('advanced-options').open=!mobile();el('coordinate-options').open=!mobile();setSheet('peek');if(mobile())map.zoomControl.setPosition('topright');
+ return {isMobile:mobile,setSheet,panel,summary,point,fitOptions,renderResults,state:()=>state};
 }
 </script>
 <script>'use strict';
@@ -925,11 +1072,14 @@ try {
  const map=L.map('map',{preferCanvas:true,zoomAnimation:false,minZoom:6,maxZoom:18,zoomControl:true,maxBounds:qBounds(data.bounds).map((p,i)=>[p[0]+(i===0?-1:1),p[1]+(i===0?-1:1)])});
  map.attributionControl.addAttribution('Cobertura: <a href="https://sistemas.anatel.gov.br/se/public/cmap.php">Anatel</a> · Limites: IBGE · Vias: © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>');
  for(const [pane,z] of [['base',220],['roads',350],['coverage',410],['borders',420]]){map.createPane(pane);map.getPane(pane).style.zIndex=String(z);}
- L.geoJSON(data.state,{pane:'base',interactive:false,style:{stroke:false,fill:true,fillColor:'#f2f5e9',fillOpacity:1}}).addTo(map);
+ const stateFill=L.geoJSON(data.state,{pane:'base',interactive:false,style:{stroke:false,fill:true,fillColor:'#f2f5e9',fillOpacity:1}}).addTo(map);
  const stateBorder=L.geoJSON(data.state,{pane:'borders',interactive:false,style:{color:'#334e57',weight:1.5,fill:false}}).addTo(map);
  map.fitBounds(qBounds(data.focusBounds),{padding:[24,24],animate:false});
  const base=createBaseRenderer(map,data,el('streets'),el('boundaries'));
  const coverage=createCoverageRenderer(map,data,datasets,limits,OP_COLORS);
+ const systemTheme=matchMedia('(prefers-color-scheme:dark)');
+ function applyTheme(){const dark=systemTheme.matches;stateFill.setStyle({fillColor:dark?'#26372f':'#f2f5e9'});stateBorder.setStyle({color:dark?'#869f9a':'#334e57'});base.draw();coverage.reset();if(window.coverageReady)render();}
+ systemTheme.addEventListener('change',applyTheme);applyTheme();
  const labels=L.layerGroup().addTo(map);
  function drawLabels(){
    labels.clearLayers();const z=map.getZoom(),bounds=map.getBounds(),placed=[],main=new Set(['Sobral','Fortaleza','Juazeiro do Norte','Crato','Camocim','Quixadá','Iguatu']);
@@ -962,6 +1112,7 @@ try {
    }
    el('legend-threshold').textContent=`${ts.join(' + ')} · ${level==='low'?'Cobertura prevista':'Sinal previsto mais alto'}`;
    el('map-label').textContent=`${ts.join(' + ')} · ${selected.size} operadora${selected.size!==1?'s':''}`;
+   mobile.summary(el('map-label').textContent);
    el('combination-label').textContent=ts.length>1?`${ts.join(' + ')}: mais recente em destaque nas sobreposições.`:`${ts[0]} selecionado. Toque em outra rede para combinar.`;
    el('overlap-legend').hidden=ts.length<2;el('overlap-legend').textContent='Tom claro: área exclusiva'+(ts.includes('3G')&&ts.includes('4G')?' · médio: 3G + 4G':'')+(ts.includes('5G')&&ts.length>1?' · forte: 5G + outra rede':'');
    const dates=ts.map(t=>{const d=[...new Set(data.layers.filter(l=>l.technology===t&&l.status==='recortado').map(l=>l.published).filter(Boolean))];return `${t}: ${d.join('/')}`;});el('published-date').textContent=dates.join(' · ');el('opacity-label').textContent=el('opacity').value+'%';el('query-tech').textContent=ts.join(' + ');if(point)showResults(point.lat,point.lng);
@@ -984,26 +1135,34 @@ try {
      }
      tr.append(op,status);body.append(tr);
    }
-   const good=result.rows.filter(r=>selected.has(r.operator)&&r.low).map(r=>name(r.operator));el('point-summary').hidden=false;el('point-summary').textContent=!result.inside?'Escolha um ponto dentro do Ceará.':good.length?`${good.length} de ${selected.size} selecionadas têm ao menos uma das redes escolhidas aqui: ${good.join(', ')}.`:`Nenhuma das ${selected.size} selecionadas tem mancha das redes escolhidas neste ponto.`;return result;
+   const good=result.rows.filter(r=>selected.has(r.operator)&&r.low).map(r=>name(r.operator));el('point-summary').hidden=false;el('point-summary').textContent=!result.inside?'Escolha um ponto dentro do Ceará.':good.length?`${good.length} de ${selected.size} selecionadas têm ao menos uma das redes escolhidas aqui: ${good.join(', ')}.`:`Nenhuma das ${selected.size} selecionadas tem mancha das redes escolhidas neste ponto.`;mobile.renderResults(result,selected);return result;
  }
- function selectPoint(lat,lng,pan=false){point={lat,lng};el('latitude').value=lat.toFixed(6);el('longitude').value=lng.toFixed(6);if(marker)marker.remove();marker=L.circleMarker([lat,lng],{radius:7,color:'#fff',weight:2,fillColor:'#162f37',fillOpacity:1}).addTo(map);showResults(lat,lng);openPanel('point');if(pan)map.setView([lat,lng],Math.max(map.getZoom(),12));}
- map.on('click',e=>selectPoint(e.latlng.lat,e.latlng.lng));map.on('moveend zoomend',drawLabels);
+ function selectPoint(lat,lng,pan=false){point={lat,lng};el('latitude').value=lat.toFixed(6);el('longitude').value=lng.toFixed(6);if(marker)marker.remove();marker=L.circleMarker([lat,lng],{radius:7,color:'#fff',weight:2,fillColor:'#162f37',fillOpacity:1}).addTo(map);if(pan)map.setView([lat,lng],Math.max(map.getZoom(),12));mobile.point(lat,lng);showResults(lat,lng);openPanel('point');}
+ let touchTap=null,lastTouchTap=null;
+ const mapElement=map.getContainer();
+ mapElement.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch')return;if(!e.isPrimary||e.target.closest('.leaflet-control,.map-legend,button,input,select')){touchTap=null;return;}touchTap={id:e.pointerId,x:e.clientX,y:e.clientY,time:performance.now()};},true);
+ mapElement.addEventListener('pointermove',e=>{if(touchTap&&e.pointerId===touchTap.id&&Math.hypot(e.clientX-touchTap.x,e.clientY-touchTap.y)>8)touchTap=null;},true);
+ mapElement.addEventListener('pointercancel',()=>touchTap=null,true);
+ mapElement.addEventListener('pointerup',e=>{const tap=touchTap;touchTap=null;if(!tap||e.pointerId!==tap.id||performance.now()-tap.time>600)return;const latlng=map.mouseEventToLatLng(e);lastTouchTap={time:performance.now(),x:e.clientX,y:e.clientY};selectPoint(latlng.lat,latlng.lng);},true);
+ map.on('click',e=>{const original=e.originalEvent;if(lastTouchTap&&original&&performance.now()-lastTouchTap.time<700&&Math.hypot(original.clientX-lastTouchTap.x,original.clientY-lastTouchTap.y)<10)return;selectPoint(e.latlng.lat,e.latlng.lng);});map.on('moveend zoomend',drawLabels);
  for(const op of operators){
    const row=document.createElement('div');row.className='operator';const label=document.createElement('label'),input=document.createElement('input'),swatch=document.createElement('span'),solo=document.createElement('button');input.type='checkbox';input.checked=true;input.dataset.operator=op;swatch.className='swatch';swatch.style.background=color(op);label.append(input,swatch,document.createTextNode(name(op)));solo.className='solo';solo.type='button';solo.textContent='Só esta';solo.setAttribute('aria-label','Mostrar somente '+name(op));row.append(label,solo);el('operators').append(row);
    input.addEventListener('change',()=>{if(input.checked)selected.add(op);else selected.delete(op);render();});solo.addEventListener('click',()=>{selected.clear();selected.add(op);document.querySelectorAll('[data-operator]').forEach(c=>c.checked=c.dataset.operator===op);render();});
  }
  for(const place of data.places){const option=document.createElement('option');option.value=place.id;option.textContent=place.name;el('municipality').append(option);}
- el('municipality').addEventListener('change',()=>{const place=data.places.find(p=>p.id===el('municipality').value);if(!place)return;map.stop();map.fitBounds(qBounds(place.bounds),{padding:[20,20],animate:false});if(highlight)highlight.remove();const feature=data.municipalities.features.find(f=>String(f.properties.codarea)===place.id);highlight=L.geoJSON(feature,{pane:'borders',interactive:false,style:{color:'#163b45',weight:2,fill:false,dashArray:'5,4'}}).addTo(map);});
- const focus=()=>{map.stop();map.fitBounds(qBounds(data.focusBounds),{padding:[24,24],animate:false});};el('corridor').addEventListener('click',focus);el('whole-state').addEventListener('click',()=>{map.stop();map.fitBounds(stateBorder.getBounds(),{padding:[20,20],animate:false});});
+ function focusPlace(place){mobile.setSheet('peek');el('municipality').value=place.id;map.stop();map.fitBounds(qBounds(place.bounds),mobile.fitOptions());if(highlight)highlight.remove();const feature=data.municipalities.features.find(f=>String(f.properties.codarea)===place.id);highlight=L.geoJSON(feature,{pane:'borders',interactive:false,style:{color:'#163b45',weight:2,fill:false,dashArray:'5,4'}}).addTo(map);}
+ el('municipality').addEventListener('change',()=>{const place=data.places.find(p=>p.id===el('municipality').value);if(place)focusPlace(place);});
+ const focus=()=>{map.stop();map.fitBounds(qBounds(data.focusBounds),mobile.fitOptions());};el('corridor').addEventListener('click',()=>{mobile.setSheet('peek');focus();});el('whole-state').addEventListener('click',()=>{mobile.setSheet('peek');map.stop();map.fitBounds(stateBorder.getBounds(),mobile.fitOptions());});
  el('threshold').addEventListener('change',()=>{level=el('threshold').value;render();});el('opacity').addEventListener('input',render);document.querySelectorAll('[data-tech]').forEach(b=>b.addEventListener('click',()=>toggleTech(b.dataset.tech)));
  el('streets').addEventListener('change',()=>{base.draw();drawLabels();});el('boundaries').addEventListener('change',()=>base.draw());
- el('point-form').addEventListener('submit',e=>{e.preventDefault();if(!e.target.reportValidity())return;selectPoint(Number(el('latitude').value),Number(el('longitude').value),true);});el('sources-button').addEventListener('click',()=>el('sources-dialog').showModal());el('close-sources').addEventListener('click',()=>el('sources-dialog').close());
+ el('point-form').addEventListener('submit',e=>{e.preventDefault();if(!e.target.reportValidity())return;if(mobile.isMobile())document.activeElement?.blur();selectPoint(Number(el('latitude').value),Number(el('longitude').value),true);});el('sources-button').addEventListener('click',()=>el('sources-dialog').showModal());el('close-sources').addEventListener('click',()=>el('sources-dialog').close());
  const list=document.createElement('ul');for(const t of ['3G','4G','5G']){const item=document.createElement('li');item.textContent=`${t}: ${data.layers.filter(l=>l.technology===t&&l.status==='recortado').length} camadas recortadas, limiares ${limits[t].join(' e ')} dBm.`;list.append(item);}el('sources-details').append(list);el('excluded-operators').textContent=`Catálogo de ${data.collectedDate}: ${data.catalogCount} arquivos. Sem interseção da previsão com o Ceará: ${data.excludedOperators.join(', ')}. Isso não comprova ausência de serviço comercial ou roaming.`;
- function openPanel(id){document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==id);document.querySelectorAll('[data-open-panel]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.openPanel===id)));}
+ const mobile=createMobileUX({map,data,onMunicipality:focusPlace,onFocus:focus,onPoint:selectPoint,name,color});
+ function openPanel(id){document.querySelectorAll('[data-panel]').forEach(p=>p.hidden=p.dataset.panel!==id);document.querySelectorAll('[data-open-panel]').forEach(b=>b.setAttribute('aria-selected',String(b.dataset.openPanel===id)));mobile.panel(id);}
  document.querySelectorAll('[data-open-panel]').forEach(b=>b.addEventListener('click',()=>openPanel(b.dataset.openPanel)));
  document.querySelector('.panel-nav').addEventListener('keydown',e=>{const buttons=[...document.querySelectorAll('[data-open-panel]')],i=buttons.indexOf(document.activeElement);if(i<0||!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:(i+(e.key==='ArrowRight'?1:buttons.length-1))%buttons.length;openPanel(buttons[next].dataset.openPanel);buttons[next].focus();});
  el('all-operators').addEventListener('click',()=>{selected.clear();operators.forEach(op=>selected.add(op));document.querySelectorAll('[data-operator]').forEach(c=>c.checked=true);render();});
- updateThresholdOptions();render();focus();drawLabels();window.coverageApp={queryPoint,selectPoint,setTech,toggleTech,openPanel,state:()=>({tech:chosen().join(' + '),technologies:chosen(),level,selected:[...selected],point,zoom:map.getZoom()}),map,coverage};await coverage.firstPaint;el('loading').hidden=true;window.coverageReady=true;
+ updateThresholdOptions();render();focus();drawLabels();window.coverageApp={queryPoint,selectPoint,setTech,toggleTech,openPanel,state:()=>({tech:chosen().join(' + '),technologies:chosen(),level,selected:[...selected],point,zoom:map.getZoom(),sheet:mobile.state()}),map,coverage,mobile};await coverage.firstPaint;el('loading').hidden=true;window.coverageReady=true;
 }catch(error){el('loading-text').textContent='Não foi possível abrir os dados: '+error.message;console.error(error);window.coverageError=error.message;}
 })();
 </script>
