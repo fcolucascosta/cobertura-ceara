@@ -8,15 +8,18 @@ Misturar quatro cores de operadoras com três tecnologias produz muitas combina�
 
 | Visão | O que a cor representa | Como confirmar o detalhe |
 | --- | --- | --- |
-| Quantidade de operadoras | 1, 2, 3 ou 4 operadoras com ao menos uma rede selecionada no limiar mais alto | Matriz de operadoras × redes ao tocar no mapa |
-| Uma operadora | Rede mais recente disponível: 3G, 4G ou 5G | Listras identificam coincidência das redes publicadas selecionadas |
+| Comparação automática, com três ou quatro operadoras | Quantidade de operadoras com ao menos uma rede selecionada no limiar mais alto | Matriz de operadoras × redes ao tocar no mapa |
+| Comparação automática, com uma ou duas operadoras | Quantidade de camadas publicadas presentes; tons ajustados à seleção | Matriz identifica as combinações exatas |
+| Uma operadora | Uma rede presente em tom claro, duas ou três sobrepostas em tons mais fortes | Tom máximo indica todas as redes publicadas selecionadas |
 | Coincidência | Interseção de todas as camadas publicadas selecionadas | Fontes ausentes são explicitamente identificadas |
 
 Quantidade de operadoras usa uma escala sequencial azul baseada no esquema Blues do ColorBrewer: `#c6dbef`, `#6baed6`, `#3182bd`, `#08519c`. No tema escuro a progressão fica mais luminosa: `#294d6b`, `#407e9f`, `#68abc5`, `#a9dfef`. Números e texto acompanham a legenda; a interpretação não depende apenas de distinguir tons.
 
-Uma operadora usa cores categóricas: âmbar para 3G, azul para 4G e violeta para 5G. Isso identifica tecnologia, sem transformar 5G em uma medida de velocidade ou de qualidade superior ao 4G. A recomendação de rotas continua usando os pesos definidos anteriormente: 4G 60%, 5G 30% e 3G 10%.
+Com uma ou duas operadoras, a escala usa a quantidade de redes presentes em vez de cores categóricas por tecnologia. A tonalidade varia entre os extremos claro e forte conforme o número de camadas publicadas selecionadas: duas camadas usam dois tons, três usam três, e duas operadoras com três redes publicadas cada usam seis tons. Uma camada usa um tom intermediário uniforme. Camadas não publicadas não ampliam a escala. Assim, a seleção inteira tem contraste suficiente, preservando a união: cobertura exclusiva de qualquer rede permanece visível.
 
-As listras nunca significam presença de uma camada não publicada. Brisanet 3G não está no catálogo. Ao selecionar as doze combinações, só onze são conhecidas; a legenda e a matriz deixam essa limitação explícita.
+Com três ou quatro operadoras, a visão automática volta à contagem de operadoras para evitar excesso de gradações. A legenda muda junto com o significado da cor. No tema escuro, a progressão fica mais luminosa, mantendo a mesma ordem de cobertura. As variações não medem intensidade de sinal nem favorecem 5G sobre 4G. A recomendação de rotas continua usando os pesos definidos anteriormente: 4G 60%, 5G 30% e 3G 10%.
+
+As listras, na visão de contagem de operadoras, e o tom máximo, na visão de sobreposição de redes, nunca significam presença de uma camada não publicada. Brisanet 3G não está no catálogo. Ao selecionar as doze combinações, só onze são conhecidas; a legenda e a matriz deixam essa limitação explícita.
 
 ## Legibilidade e desempenho
 

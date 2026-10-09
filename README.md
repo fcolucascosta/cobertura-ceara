@@ -16,7 +16,7 @@ Site estático, sem backend. Dados, bibliotecas e aplicação estão incluídos 
 
 ## Cores e desempenho
 
-A visão inicial usa uma escala azul para indicar quantas operadoras têm ao menos uma das redes selecionadas naquele local. A visão de uma operadora distingue 3G, 4G e 5G; a visão de coincidência mostra a interseção das camadas publicadas selecionadas. Listras indicam a coincidência dessas camadas. Brisanet 3G não foi publicado: ausência de informação aparece como N/D, sem ser tratada como ausência de cobertura.
+A comparação automática adapta a escala azul à seleção. Com uma ou duas operadoras, tons claros indicam uma rede presente e tons mais fortes indicam mais camadas sobrepostas. A escala usa toda a faixa de contraste para as camadas publicadas selecionadas. Com três ou quatro operadoras, os tons contam operadoras com ao menos uma rede presente. A visão de uma operadora usa a mesma escala de sobreposição; a visão de coincidência mostra a interseção das camadas publicadas selecionadas. Listras na contagem de operadoras e o tom máximo na contagem de redes indicam a coincidência dessas camadas. Brisanet 3G não foi publicado: ausência de informação aparece como N/D, sem ser tratada como ausência de cobertura.
 
 A matriz exibida ao tocar no mapa esclarece cada combinação de operadora e tecnologia. A transparência é fixa; a cor não representa intensidade de sinal. O [estudo de cores](ESTUDO_CORES.md) explica as decisões e referências.
 
